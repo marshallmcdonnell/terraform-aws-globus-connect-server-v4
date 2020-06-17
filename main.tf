@@ -10,15 +10,6 @@ terraform {
     }
 }
 
-data "template_file" "user_data" {
-  template  = "user-data.sh"
-  vars      = {
-    username               = var.username
-    docker_version         = var.docker_version
-    docker_compose_version = var.docker_compose_version
-  }
-}
-
 resource "aws_key_pair" "key" {
     key_name    = var.ssh_key_name
     public_key  = file("${var.ssh_key_file}.pub")
@@ -76,5 +67,29 @@ resource "aws_instance" "globus_server" {
     instance_type   = "t2.micro"
     key_name        = var.ssh_key_name
     vpc_security_group_ids = [aws_security_group.allow_traffic.id]
-    user_data       = data.template_file.user_data.rendered
+
+    connection {
+        type    = "ssh"
+        user    = var.ssh_username
+        host    = self.public_dns
+        private_key  = file("${var.ssh_key_file}")
+    }
+
+    provisioner "file" {
+        source      = "globus-connect-server.conf"
+        destination = "globus-connect-server.conf"
+    }
+
+    provisioner "file" {
+        source      = "./setup_scripts/centos7.sh"
+        destination = "setup.sh"
+
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "sudo chmod +x setup.sh",
+            "sudo bash setup.sh ${var.globus_user} ${var.globus_password}",
+        ]
+    }
 }

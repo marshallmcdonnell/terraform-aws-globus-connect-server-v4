@@ -5,23 +5,8 @@ variable "region" {
 variable "amis" {
     type = map(string)
     default = {
-        "us-east-1" = "ami-b374d5a5"
-        "us-east-2" = "ami-0d5d9d301c853a04a"
+        "us-east-2" = "ami-0a54aef4ef3b5f881"
     }
-}
-
-variable "username" {
-  default = "root"
-}
-
-# Docker compose version to provision the server with
-variable "docker_version" {
-  default = "19.03.7"
-}
-
-# Docker compose version to provision the server with
-variable "docker_compose_version" {
-  default = "1.25.4"
 }
 
 variable "ssh_key_file" {
@@ -33,9 +18,12 @@ variable "ssh_key_name" {
 }
 
 variable "ssh_username" {
-  default = "ubuntu"
+  default = "ec2-user"
 }
 
 variable "security_group_name" {
   default = "allow_traffic"
 }
+
+variable "globus_user" {}
+variable "globus_password" {}
