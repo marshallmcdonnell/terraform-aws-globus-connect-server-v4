@@ -13,5 +13,6 @@ Provision a Globus Connect Server on AWS EC2 instance for a RHEL AMI
 cp terraform.tfvars.sample terraform.tfvars
 ```
 and modify the file for your `GLOBUS_USER` and `GLOBUS_PASSWORD` 
+
 6) Review and apply changes to resources: `terraform apply -var-file=terraform.tfvars`
 7) Tear down resources: `terraform destroy -var-file=terraformtfvars`
