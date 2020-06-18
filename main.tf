@@ -26,14 +26,6 @@ resource "aws_security_group" "allow_traffic" {
     }
 
     ingress {
-        from_port   = 443
-        to_port     = 443
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-
-    ingress {
         from_port   = 2811
         to_port     = 2811
         protocol    = "tcp"
@@ -76,20 +68,16 @@ resource "aws_instance" "globus_server" {
     }
 
     provisioner "file" {
-        source      = "globus-connect-server.conf"
-        destination = "globus-connect-server.conf"
-    }
-
-    provisioner "file" {
-        source      = "./setup_scripts/centos7.sh"
-        destination = "setup.sh"
-
+        source      = "globus-server"
+        destination = "globus-server"
     }
 
     provisioner "remote-exec" {
         inline = [
-            "sudo chmod +x setup.sh",
-            "sudo bash setup.sh ${var.globus_user} ${var.globus_password}",
+            "sudo yum install -y docker",
+            "sudo touch /etc/containers/nodocker",
+            "docker build -t globus-server globus-server",
+            "docker run -p 2811:2811 -p 50000-51000:50000-51000 -p 7512:7512 -e GLOBUS_USER=${var.globus_user} -e GLOBUS_PASSWORD=${var.globus_password} globus-server",
         ]
     }
 }
