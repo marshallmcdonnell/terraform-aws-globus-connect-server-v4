@@ -1,5 +1,5 @@
-# Terraform Globus Connect Server on AWS EC2
-Provision a Globus Connect Server on AWS EC2 instance for a RHEL AMI
+# Terraform Globus Connect Server v4 on AWS EC2
+Provision a Globus Connect Server v4 on AWS EC2 instance for a RHEL AMI
 
 ## Quickstart
 
