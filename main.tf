@@ -83,13 +83,12 @@ resource "aws_instance" "globus_server" {
     provisioner "file" {
         source      = "./setup_scripts/centos7.sh"
         destination = "setup.sh"
-
     }
 
     provisioner "remote-exec" {
         inline = [
             "sudo chmod +x setup.sh",
-            "sudo bash setup.sh ${var.globus_user} ${var.globus_password}",
+            "sudo bash setup.sh ${var.globus_user} ${var.globus_password} ${var.activation_user} ${var.activation_password}",
         ]
     }
 }
