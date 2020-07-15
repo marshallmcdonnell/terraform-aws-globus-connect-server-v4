@@ -34,9 +34,6 @@ EXPOSE 50000-51000
 #Exposing ports Globus's MyProxy Server uses
 EXPOSE 7512
 
-#Exposing ports Globus's OAuth Server uses
-EXPOSE 443
-
 # Make data directory and location to store globus state
 RUN mkdir -p /data \
     && mkdir -p /globus_state
