@@ -27,3 +27,5 @@ variable "security_group_name" {
 
 variable "globus_user" {}
 variable "globus_password" {}
+variable "activation_user" {}
+variable "activation_password" {}

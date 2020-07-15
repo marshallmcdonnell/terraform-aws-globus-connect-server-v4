@@ -1,2 +1,4 @@
 globus_user="globus username without the @globus.org"
 globus_password="globuser username password"
+activation_user="username on local machine for activating globus endpoint"
+activation_password="password of the activation_user on local machine"

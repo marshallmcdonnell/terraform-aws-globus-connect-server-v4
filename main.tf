@@ -76,8 +76,9 @@ resource "aws_instance" "globus_server" {
         inline = [
             "sudo yum install -y docker",
             "sudo touch /etc/containers/nodocker",
+            "export HOSTNAME=`curl http://169.254.169.254/latest/meta-data/public-hostname`",
             "sudo docker build -t globus-server globus-server",
-            "sudo docker run -d -p 2811:2811 -p 50000-51000:50000-51000 -p 7512:7512 -e GLOBUS_USER=${var.globus_user} -e GLOBUS_PASSWORD=${var.globus_password} globus-server",
+            "sudo docker run -d -p 2811:2811 -p 50000-51000:50000-51000 -p 7512:7512 -e GLOBUS_USER=${var.globus_user} -e GLOBUS_PASSWORD=${var.globus_password} -e ACTIVATION_USER=${var.activation_user} -e ACTIVATION_PASSWORD=${var.activation_password} -e PUBLIC_HOSTNAME=$HOSTNAME  globus-server",
         ]
     }
 }

@@ -1,6 +1,12 @@
 #!/bin/bash
-export HOSTNAME=`curl http://169.254.169.254/latest/meta-data/public-hostname`
-export SHORT_HOSTNAME=`echo ${HOSTNAME%%.*}`
+export SHORT_HOSTNAME=`echo ${PUBLIC_HOSTNAME%%.*}`
+echo "\n\nPUBLIC_HOSTNAME" $PUBLIC_HOSTNAME >> "docker.log"
+echo "\n\nSHORT_HOSTNAME" $SHORT_HOSTNAME >> "docker.log"
+
+echo "Creating activation user"
+useradd -ms /bin/bash "${ACTIVATION_USER}"
+chown "${ACTIVATION_USER}" /data
+echo ""${ACTIVATION_USER}":"${ACTIVATION_PASSWORD}"" | chpasswd
 
 globus-connect-server-setup
 echo "All done... Server running"
