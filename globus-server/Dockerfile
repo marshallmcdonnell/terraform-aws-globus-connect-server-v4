@@ -11,11 +11,13 @@ RUN curl -LOs https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch
 RUN curl -LOs https://downloads.globus.org/toolkit/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm \
     && rpm --import https://downloads.globus.org/toolkit/gt6/stable/repo/rpm/RPM-GPG-KEY-Globus \
     && yum -y install globus-connect-server-repo-latest.noarch.rpm \
-    && yum -y install globus-connect-server
+    && yum -y install globus-connect-server \
+    && yum -y install wget
 
-# Installing cron, needed for CILogon authentication
-#RUN yum -y install cronie
-
+# Replace systemd
+# repo: https://github.com/gdraheim/docker-systemctl-replacement
+RUN wget https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py -O /bin/systemctl \
+    && chmod +x /bin/systemctl
 
 # /etc is the directory for globus's executables
 WORKDIR /etc
@@ -38,5 +40,4 @@ EXPOSE 7512
 RUN mkdir -p /data \
     && mkdir -p /globus_state
 
-# Making an endpoint by running the globus-connect-server-setup script
-ENTRYPOINT ["bash", "entrypoint.sh"]
+CMD ["bash", "entrypoint.sh"]
